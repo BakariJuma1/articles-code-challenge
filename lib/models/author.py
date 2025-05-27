@@ -21,12 +21,18 @@ class Author:
     def save(self):
         conn = get_connection()
         cursor = conn.cursor()
-        cursor.execute(
-            "INSERT INTO authors (name) VALUES (?)",
-            (self._name,)
-        )
+        if self.id is None:
+            cursor.execute(
+                  "INSERT INTO authors (name) VALUES (?)",
+                   (self._name,)
+            )
+            self.id = cursor.lastrowid
+        else:
+            cursor.execute(
+                "UPDATE authors SET name = ? WHERE id = ?",
+                (self._name, self.id)
+            )    
         conn.commit()
-        self.id =cursor.lastrowid
         conn.close()
 
     # find author by id    # 
@@ -105,16 +111,45 @@ class Author:
                          FROM authors a
            JOIN articles ar ON a.id = ar.author_id
            GROUP BY a.id
-           ORDER BY article_count DESC
-           LIMIT 1
+        ORDER BY article_count DESC
+        LIMIT 1
          """)
         row = cursor.fetchone()
         conn.close()
         if row:
           return cls(row["name"], row["id"])
         return None
-
-
+    
+    
+    # Add an author and their articles in a single transaction.
+    # articles_data: list of dicts with 'title' and 'magazine_id' keys
+    @classmethod
+    def add_author_with_articles(cls, author_name, articles_data):
+        conn = get_connection()
+        try:
+            conn.execute("BEGIN TRANSACTION")
+            cursor = conn.cursor()
+            
+            cursor.execute(
+                "INSERT INTO authors (name) VALUES (?)",
+                (author_name,)
+            )
+            author_id = cursor.lastrowid
+            
+            for article in articles_data:
+                cursor.execute(
+                    "INSERT INTO articles (title, author_id, magazine_id) VALUES (?, ?, ?)",
+                    (article['title'], author_id, article['magazine_id'])
+                )
+            
+            conn.commit()
+            return True
+        except Exception as e:
+            conn.rollback()
+            print(f"Transaction failed: {e}")
+            return False
+        finally:
+            conn.close()
     
     def __repr__(self):
         return (f"Author id ={self.id} name={self.name}")
