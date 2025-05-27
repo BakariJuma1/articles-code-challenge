@@ -99,5 +99,37 @@ class Magazine:
         conn.close()
         return [Author(row["name"], row["id"]) for row in rows]
     
+    @classmethod
+    def article_counts(cls):
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+        SELECT m.name, COUNT(ar.id) AS article_count
+        FROM magazines m
+        LEFT JOIN articles ar ON m.id = ar.magazine_id
+        GROUP BY m.id
+         """)
+        rows = cursor.fetchall()
+        conn.close()
+        # Returns list of tuples (magazine_name, article_count)
+        return [(row["name"], row["article_count"]) for row in rows]
+    
+    @classmethod
+    def magazines_with_multiple_authors(cls):
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+        SELECT m.*, COUNT(DISTINCT a.id) AS author_count
+        FROM magazines m
+        JOIN articles ar ON m.id = ar.magazine_id
+        JOIN authors a ON a.id = ar.author_id
+        GROUP BY m.id
+        HAVING author_count >= 2
+        """)
+        rows = cursor.fetchall()
+        conn.close()
+        return [cls(row["name"], row["category"], row["id"]) for row in rows]
+
+
     def __repr__(self):
         return f"<Magazine id={self.id}, name='{self.name}', category='{self.category}'>"

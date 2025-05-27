@@ -95,6 +95,25 @@ class Author:
         rows = cursor.fetchall()
         conn.close()
         return [row["category"] for row in rows]
+    
+    @classmethod
+    def top_author(cls):
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+           SELECT a.*, COUNT(ar.id) AS article_count
+                         FROM authors a
+           JOIN articles ar ON a.id = ar.author_id
+           GROUP BY a.id
+           ORDER BY article_count DESC
+           LIMIT 1
+         """)
+        row = cursor.fetchone()
+        conn.close()
+        if row:
+          return cls(row["name"], row["id"])
+        return None
+
 
     
     def __repr__(self):
