@@ -2,10 +2,14 @@ from lib.db.connection import get_connection
 
 class Article:
     def __init__(self,title,author_id,magazine_id,id=None):
+        if not title or len(title)<5:
+            raise ValueError("Tittle must be atleast 5 charachters")
+        
         self.id = id 
         self.title = title
         self.author_id = author_id
         self.magazine_id = magazine_id
+        self.save()
 
     # insert article into db    #
     def save(self):
