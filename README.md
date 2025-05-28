@@ -1,23 +1,65 @@
-Articles Code Challenge
-This project is a simple aricle  management system built using Python and SQLite.
+# 📰 Articles Code Challenge
 
- #Features
-🔁 Full CRUD Support for Author and Magazine models — Create, Read, Update, and Delete with ease.
+Welcome to the **Articles Code Challenge**! This is a simple yet powerful content management system built using **Python** and **SQLite**. It allows you to create, associate, and manage **Authors**, **Magazines**, and their published **Articles** — all while practicing raw SQL and object relationships.
 
-🧾 Relational Article Model — Articles are always linked to both an author and a magazine.
+---
 
-🔗 Smart Relationship Methods — Use SQL joins under the hood to fetch related data like an author's magazines or a magazine’s contributors.
+## 👨🏾‍💻 Developer
 
-🔒 Safe Transactions — Articles can be batch-created with authors in one atomic, rollback-safe operation.
+**Bakari Isaac Juma**  
+Fullstack Software Engineering Student @ Moringa School  
+Passionate about clean code, real-world problem solving, and building cool things with Python 🐍 and JavaScript ⚡
 
+---
 
-Setup
-Clone the repo
-git clone git@github.com:mbxisbankai/articles-code-challenge.git
-Create and activate a virtual environment
+## 🌟 Features
+
+- ✅ Full CRUD operations for **Author** and **Magazine** models
+- 📝 Articles can be created and linked to both Authors and Magazines
+- 🔄 SQL-powered relationship methods for retrieving related data
+- 💾 Transaction-safe article creation using raw SQL and Python classes
+- 🎯 Lightweight and easy to run locally
+
+---
+
+## 🛠 Setup Instructions
+
+Follow these steps to get the project up and running on your machine:
+
+### 1. Clone the repo
+
+```bash
+git clone git@github.com:Bakari-juma/articles-code-challenge.git
+cd articles-code-challenge
+2. Set up your virtual environment
+If you're using Pipenv:
+
+bash
+Copy
+Edit
 pipenv install && pipenv shell
-Install dependencies using pip install -r requirements.txt or via Pipenv
+Or if you’re using venv and pip:
+
+bash
+Copy
+Edit
+python3 -m venv env
+source env/bin/activate
+pip install -r requirements.txt
+3. Install SQLite3 (if not already installed)
+bash
+Copy
+Edit
 pipenv install sqlite3
-Initialize the database by running
+4. Initialize the database
+bash
+Copy
+Edit
 python3 scripts/setup_db.py
-Run python3 debug.py to populate the database with sample data 
+5. Seed the database with sample data
+bash
+Copy
+Edit
+python3 db/seed.py
+You're now ready to play around with the system, run queries, and explore relationships between authors, magazines, and articles.
+
