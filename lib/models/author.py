@@ -150,6 +150,53 @@ class Author:
             return False
         finally:
             conn.close()
+
+     # ➕ CREATE table
+    @classmethod
+    def create_table(cls):
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS authors (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL
+            )
+        """)
+        conn.commit()
+        conn.close()
+
+    # ➖ DROP table
+    @classmethod
+    def drop_table(cls):
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute("DROP TABLE IF EXISTS authors")
+        conn.commit()
+        conn.close()
+
+    #DELETE this author from DB
+    def delete(self):
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM authors WHERE id = ?", (self.id,))
+        conn.commit()
+        conn.close()
+        self.id = None
+
+    #GET ALL authors
+    @classmethod
+    def get_all(cls):
+        conn = get_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM authors")
+        rows = cursor.fetchall()
+        conn.close()
+        return [cls(row["name"], row["id"]) for row in rows]
+
+    #CREATE method
+    @classmethod
+    def create(cls, name):
+        return cls(name)        
     
     def __repr__(self):
         return (f"Author id ={self.id} name={self.name}")
