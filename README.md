@@ -1,6 +1,6 @@
 # 📰 Articles Code Challenge
 
-Welcome to the **Articles Code Challenge**! This is a simple yet powerful content management system built using **Python** and **SQLite**. It allows you to create, associate, and manage **Authors**, **Magazines**, and their published **Articles** — all while practicing raw SQL and object relationships.
+Welcome to the **Articles Code Challenge**! This is a simple article management system built using **Python** and **SQLite**. It allows you to create, associate, and manage **Authors**, **Magazines**, and their published **Articles** — all while practicing raw SQL and object relationships.
 
 ---
 
@@ -56,10 +56,6 @@ bash
 Copy
 Edit
 python3 scripts/setup_db.py
-5. Seed the database with sample data
-bash
-Copy
-Edit
-python3 db/seed.py
+
 You're now ready to play around with the system, run queries, and explore relationships between authors, magazines, and articles.
 
